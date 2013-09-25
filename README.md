@@ -36,7 +36,7 @@ name.rb
 
     n.save 
 
-    console\n
+console
     n.name
      #如果model里添加了db_i18n的方法会根据I18n.locale的值来判断当前的值,
       如果没加则会取出原有的name属性.否则就会提示未定义的方法
