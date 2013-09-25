@@ -22,7 +22,7 @@ Or install it yourself as:
 
     rails g model language name:string
 
-name.rb
+language.rb
 
     db_i18n(:name,[:en,:zh])
 
