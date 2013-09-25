@@ -29,6 +29,7 @@ language.rb
     在model里加入这个方法后会生成name_en和name_zh的方法
 
 console
+
     n = Name.new 
 
     n.name_en = "english" 
