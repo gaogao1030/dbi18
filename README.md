@@ -1,6 +1,6 @@
 # Dbi18
 
-TODO: Write a gem description
+this is my first gem
 
 ## Installation
 
@@ -22,6 +22,7 @@ rails g dbi18 任意参数
 rails g model language name:string
 
 name.rb
+
 db_i18n(:name,[:en,:zh])
 
 在model里加入这个方法后会生成name_en和name_zh的方法
@@ -37,10 +38,13 @@ n.save
 console\n
 n.name #如果model里添加了db_i18n的方法会根据I18n.locale的值来判断当前的值,
 如果没加则会取出原有的name属性.否则就会提示未定义的方法
-#如果想取出自定义的值可以用以下的方式
-n.name_en
-n.name_zh
+如果想取出自定义的值可以用以下的方式
 
+n.name_en
+=> "english"
+
+n.name_zh
+=> "china"
 
 ## Contributing
 
