@@ -6,20 +6,18 @@ module Dbi18
   module Generators
     class Dbi18Generator < Rails::Generators::Base
       source_root File.expand_path('../templates', __FILE__)
-      # argument :user_class, type: :string, banner: "User", desc: "User class for the system, maybe User, Account or Admin etc. in  your case."
+            argument :dbi18_class, type: :string, banner: "dbi18", desc: "dbi18", default: "dbi18"
+            class_option :orm, :type => :string, :default => "active_record"
+      def show
+        p "#{dbi18_class}"
+      end
 
 
       hook_for :orm
-      # namespace :dbi18
+      namespace :dbi18
 
-      desc "Generates RBAC(role base access control) models and migration files according to the USER"
-      # def show_parameters
-      #   puts "user:    " + self.user
-      #   puts "auth_item:       " + self.options[:auth_item].inspect
-      #   puts "auth_item_child: " + self.options[:auth_item_child].inspect
-      #   puts "auth_assignment: " + self.options[:auth_assignment].inspect
-      #   puts "options:         " + options.inspect
-      # end
+      desc "rails g dbi18 [parameters]"
+
     end
   end
 end
