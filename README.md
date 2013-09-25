@@ -28,6 +28,7 @@ language.rb
 
     在model里加入这个方法后会生成name_en和name_zh的方法
 
+console
     n = Name.new 
 
     n.name_en = "english" 
@@ -36,18 +37,23 @@ language.rb
 
     n.save 
 
-console
+
+    #i18n.locale = :en	
 
     n.name
-     #如果model里添加了db_i18n的方法会根据I18n.locale的值来判断当前的值,
-      如果没加则会取出原有的name属性.否则就会提示未定义的方法
-      如果想取出自定义的值可以用以下的方式
+
+    #=> "english"
+
+    #如果model里添加了db_i18n的方法会根据I18n.locale的值来判断当前的值,
+    如果没加则会取出原有的name属性.否则就会提示未定义的方法
+
+    #如果想取出自定义的值可以用以下的方式
 
     n.name_en
-    => "english"
+    #=> "english"
 
     n.name_zh
-    => "china"
+    #=> "china"
 
 ## Contributing
 
