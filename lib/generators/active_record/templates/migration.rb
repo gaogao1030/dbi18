@@ -10,7 +10,7 @@ class CreateCimuDbi18 < ActiveRecord::Migration
 
     add_index(:cimu_dbi18s, :class_id)
     add_index(:cimu_dbi18s, :class_name)
-    add_index(:cimu_dbi18s, :language_type
+    add_index(:cimu_dbi18s, :language_type)
     add_index(:cimu_dbi18s, :hash_content)
   end
 end

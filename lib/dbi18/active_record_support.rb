@@ -5,45 +5,54 @@ module Dbi18
   	end
 
 module ClassMethods
-	def db_i18n(method, *args)
+	def db_i18n(*attributes, language)
 		include Del
-		attr_go = (method.to_s+"_go").to_sym
-		after_action = ("after"+"_"+attr_go.to_s).to_sym
+		language.each do |l_type|
+		s_l_type = l_type.to_s
+		dbi18_type = ("dbi18_"+s_l_type).to_sym
+		after_action = ("after"+"_"+dbi18_type.to_s).to_sym
 			self.class_eval do
-					  attr_accessor attr_go
+					  attr_accessor dbi18_type
 					  after_save after_action
 				end
 		self.send :define_method, after_action do #after_save_action
-				eval("if !self.#{attr_go}.blank?
-								self.#{attr_go}.class_id = self.id;
-								self.#{attr_go}.save;
+				eval("
+							if !self.#{dbi18_type}.blank?
+								self.#{dbi18_type}.class_id = self.id;
+								self.#{dbi18_type}.save;
 							else
-								self.#{attr_go} = CimuDbi18.new if (self.#{attr_go} = CimuDbi18.where(:class_id => self.id, :class_name => self.class.name, :property => method.to_s).first).blank?;
-								self.#{attr_go}.class_id = self.id;
-								self.#{attr_go}.property = method.to_s;
-								self.#{attr_go}.class_name = self.class.name
+								self.#{dbi18_type} = CimuDbi18.new if (self.#{dbi18_type} = CimuDbi18.where(:class_id => self.id, :class_name => self.class.name, :property => method.to_s).first).blank?;
+								self.#{dbi18_type}.class_id = self.id;
+								self.#{dbi18_type}.property = method.to_s;
+								self.#{dbi18_type}.class_name = self.class.name
 								self.save
 							end
 							")
 	  	end
-	  	init_attr_method = ("init_"+method.to_s+"_hash_content").to_sym
-	  	self.send :define_method, init_attr_method do #initial obeject.attr_go.hash_content
+	  end
+
+  	init_attr_method = ("init_hash_content").to_sym
+	  	self.send :define_method, init_attr_method do #initial obeject.dbi18_type.hash_content
 	  		@count = 0
-	  		args[0].each do |language|
+	  		attributes.each do |attrs|
+	  			attrs = attrs.to_s
 	  			@count += 1
 	  			if @count == 1
 	  				@str = "{"
 	  			end
-	  			if @count < args[0].length
-	  				@str += "\"#{language}\"=>\"\","
+	  			if @count < attributes.length
+	  				@str += "\"#{attrs}\"=>\"\","
 	  			else
-	  				@str += "\"#{language}\"=>\"\"}"
+	  				@str += "\"#{attrs}\"=>\"\"}"
 	  			end
 	  		end
 	  		return @str
 	  	end
-		args[0].each do |language|
-					new_method = method.to_s+"_"+language.to_s+"="
+
+		attributes.each do |attrs|
+			language.each do |l_type| 
+					attribute = attrs.to_s
+					new_method = attrs.to_s+"_"+l_type.to_s+"="
 					new_method = new_method.to_sym
 					self.send :define_method, new_method do |args| #set_value
 						if eval("self.#{attr_go}.blank?")
@@ -62,24 +71,27 @@ module ClassMethods
 				    	@s_result.hash_content = hash_result.to_s
 				    	eval("self.#{attr_go} = @s_result")
 				    end
-						new_method = method.to_s+"_"+language.to_s
+						new_method = attrs.to_s+"_"+l_type.to_s
 						new_method = new_method.to_sym
 				      self.send :define_method, new_method do #get_value
 				      eval(
 			    			"
-			      	 	self.#{attr_go} = CimuDbi18.where(:class_id => self.id, :class_name => self.class.name, :property => method.to_s).first if self.#{attr_go}.blank?;
+			      	 	self.#{attr_go} = CimuDbi18.where(:class_id => self.id, :class_name => self.class.name, :language_type => language.to_s).first if self.#{attr_go}.blank?;
 			      	 	return \"\" if (self.#{attr_go}).blank?;
 			      	 	return \"\" if (self.#{attr_go}.hash_content).blank?;
-			      	 	return  (eval self.#{attr_go}.hash_content)[\"#{language}\"]
+			      	 	return  (eval self.#{attr_go}.hash_content)[\"#{attribute}\"]
 			      	 	"
 				      	 	)
 
 					    end
 		end
-			self.send :define_method, method do #get_value_with_i18n.locale
+			self.send :define_method, attrs do #get_value_with_i18n.locale
 	    	locale = I18n.locale.to_s
-	    		self.send  method.to_s+"_"+locale
+	    		self.send  attrs.to_s+"_"+locale
 	    end
+	end
+
+
 
 	end
 end
