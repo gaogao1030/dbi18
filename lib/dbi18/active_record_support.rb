@@ -52,37 +52,38 @@ module ClassMethods
 		attributes.each do |attrs|
 			language.each do |l_type| 
 					attribute = attrs.to_s
-					new_method = attrs.to_s+"_"+l_type.to_s+"="
+					language_type = l_type.to_s
+					new_method = attribute+"_"+language_type+"="
 					new_method = new_method.to_sym
+					dbi18_type = ("dbi18_"+language_type).to_sym
 					self.send :define_method, new_method do |args| #set_value
-						if eval("self.#{attr_go}.blank?")
-				    	@s_result = CimuDbi18.new if ((@s_result = CimuDbi18.where(:class_id => self.id, :class_name => self.class.name, :property => method.to_s).first).blank?)
+						if eval("self.#{dbi18_type}.blank?")
+				    	@s_result = CimuDbi18.new if ((@s_result = CimuDbi18.where(:class_id => self.id, :class_name => self.class.name, :language_type => language_type).first).blank?)
 				    else
-				    	eval("@s_result = self.#{attr_go}")
+				    	eval("@s_result = self.#{dbi18_type}")
 				    end
 				    	result = self.send "#{init_attr_method}" if @s_result.hash_content.blank?
 				    	result = @s_result.hash_content.to_s if !@s_result.hash_content.blank?
 				    	# j_result = JSON.parse result
 				    	hash_result = eval result
-				    	hash_result["#{language}"] = "#{args}"
+				    	hash_result["#{attrs}"] = "#{args}"
 				    	@s_result.class_id = self.id#obj.id 
 				    	@s_result.class_name = self.class.name #obj.class.name
-				    	@s_result.property = method.to_s
+				    	@s_result.language_type = language_type
 				    	@s_result.hash_content = hash_result.to_s
-				    	eval("self.#{attr_go} = @s_result")
+				    	eval("self.#{dbi18_type} = @s_result")
 				    end
 						new_method = attrs.to_s+"_"+l_type.to_s
 						new_method = new_method.to_sym
-				      self.send :define_method, new_method do #get_value
+				    self.send :define_method, new_method do #get_value
 				      eval(
 			    			"
-			      	 	self.#{attr_go} = CimuDbi18.where(:class_id => self.id, :class_name => self.class.name, :language_type => language.to_s).first if self.#{attr_go}.blank?;
-			      	 	return \"\" if (self.#{attr_go}).blank?;
-			      	 	return \"\" if (self.#{attr_go}.hash_content).blank?;
-			      	 	return  (eval self.#{attr_go}.hash_content)[\"#{attribute}\"]
+			      	 	self.#{dbi18_type} = CimuDbi18.where(:class_id => self.id, :class_name => self.class.name, :language_type => language_type).first if self.#{dbi18_type}.blank?;
+			      	 	return \"\" if (self.#{dbi18_type}).blank?;
+			      	 	return \"\" if (self.#{dbi18_type}.hash_content).blank?;
+			      	 	return  (eval self.#{dbi18_type}.hash_content)[\"#{attribute}\"]
 			      	 	"
 				      	 	)
-
 					    end
 		end
 			self.send :define_method, attrs do #get_value_with_i18n.locale
