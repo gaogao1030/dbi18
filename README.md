@@ -24,15 +24,9 @@ Or install it yourself as:
 
 Model/language.rb
 
-    db_i18n(:name,:des,[:en,:zh])
+    db_i18n(:name,:des)
 
-    #在model里加入这个方法后会生成name_en,name_zh,des_en,des_zh的方法
-
-    #使用默认配置方法
-
-    db_i18n(*Dbi18.attributes,Dbi18.language_type)
-
-    #Dbi18具体的属性可以在config/initialzer/dbi18.rb下配置
+    #Dbi18语种可以在config/initialzer/dbi18.rb下配置
 
     config/initialzer/dbi18.rb
 
@@ -42,14 +36,12 @@ Model/language.rb
 
         # models and database tables
 
-        # config.attributes = :name,:des
-
         # config.language_type = [:en,:zh]
+
     end
 
     若没设置属性 则默认属性为:
 
-    config.attributes = :name,:des # 设置属性
 
     config.language_type = [:en,:zh] #设置语种
 

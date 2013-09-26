@@ -5,8 +5,10 @@ module Dbi18
   	end
 
 module ClassMethods
-	def db_i18n(*attributes, language)
+
+	def db_i18n(*attributes)
 		include Del
+		language = Dbi18.language_type
 		language.each do |l_type|
 		s_l_type = l_type.to_s
 		dbi18_type = ("dbi18_"+s_l_type).to_sym
@@ -16,7 +18,8 @@ module ClassMethods
 					  after_save after_action
 				end
 		self.send :define_method, after_action do #after_save_action
-				eval("
+				eval(
+							"
 							if !self.#{dbi18_type}.blank?
 								self.#{dbi18_type}.class_id = self.id;
 								self.#{dbi18_type}.save;
@@ -27,7 +30,8 @@ module ClassMethods
 								self.#{dbi18_type}.class_name = self.class.name
 								self.save
 							end
-							")
+							"
+							)
 	  	end
 	  end
 
