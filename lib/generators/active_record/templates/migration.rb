@@ -4,7 +4,7 @@ class CreateCimuDbi18 < ActiveRecord::Migration
       t.integer :class_id
       t.string  :class_name
       t.string  :language_type
-      t.text  :hash_content
+      t.text    :hash_content
       t.timestamps
     end
 
