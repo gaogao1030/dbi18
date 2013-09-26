@@ -24,9 +24,9 @@ Or install it yourself as:
 
 language.rb
 
-    db_i18n(:name,[:en,:zh])
+    db_i18n(:name,:des,[:en,:zh])
 
-    在model里加入这个方法后会生成name_en和name_zh的方法
+    在model里加入这个方法后会生成name_en,name_zh,des_en,des_zh的方法
 
 console
 
@@ -35,6 +35,10 @@ console
     n.name_en = "english" 
 
     n.name_zh = "china" 
+
+    n.des_zh = "des_zh" 
+
+    n.des_en = "des_en" 
 
     n.save 
 
@@ -45,16 +49,30 @@ console
 
     #=> "english"
 
+    n.des
+
+    #=> "des_zh"
+
     #如果model里添加了db_i18n的方法会根据I18n.locale的值来判断当前的值,
     如果没加则会取出原有的name属性.否则就会提示未定义的方法
 
     #如果想取出自定义的值可以用以下的方式
 
     n.name_en
+
     #=> "english"
 
     n.name_zh
+
     #=> "china"
+
+    n.des_en
+    
+    #=> "des_en"
+
+    n.des_zh
+
+    #=> "des_zh"
 
 ## Contributing
 
