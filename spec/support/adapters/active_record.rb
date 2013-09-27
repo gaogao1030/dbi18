@@ -8,6 +8,8 @@ load File.dirname(__FILE__) + '/../schema.rb'
 
 class Cimu < ActiveRecord::Base
 		Dbi18.model = Cimu
+		Dbi18.language_type = [:en,:zh]
+		attr_accessible :class_id, :class_name, :hash_content, :language_type
 end
 
 class Sub1 < ActiveRecord::Base
