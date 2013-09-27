@@ -1,6 +1,8 @@
 # Dbi18
 
-this is my first gem
+数据库中的dbi18 
+支持rails3 但不支持rails4 
+目前mysql与sqlite3数据库测试可用
 
 ## Installation
 
@@ -18,7 +20,7 @@ Or install it yourself as:
 
 ## Usage
 
-    rails g dbi18 任意参数
+    rails g dbi18 table_name [option] #生成表名与model名字
 
     rails g model language
 
@@ -36,14 +38,12 @@ Model/language.rb
 
         # models and database tables
 
-        # config.language_type = [:en,:zh]
+        # config.language_type = [:en,:zh] #语种设置属性
+
+	config.model = model_name # model的名字 生成表名的情况下会自动生成model的名字 这个选项推荐不要修改
 
     end
 
-    若没设置属性 则默认属性为:
-
-
-    config.language_type = [:en,:zh] #设置语种
 
 console
 
