@@ -1,13 +1,17 @@
 require 'active_record'
-
 RSpec::Matchers::OperatorMatcher.register(ActiveRecord::Relation, '=~', RSpec::Matchers::BuiltIn::MatchArray)
 ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => ":memory:")
 ActiveRecord::Base.send :include, Dbi18::ActiveRecordSupport
-
 load File.dirname(__FILE__) + '/../schema.rb'
 
 # ActiveRecord models
+
+class Cimu < ActiveRecord::Base
+		Dbi18.model = Cimu
+end
+
 class Sub1 < ActiveRecord::Base
+
 	# attr_accessible :name
 	db_i18n(:name,:des)
 end
