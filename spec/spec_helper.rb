@@ -6,4 +6,4 @@ require "bundler/setup"
 Dbi18.configure
 
 load File.dirname(__FILE__) + "/support/adapters/active_record.rb"
-load File.dirname(__FILE__) + '/support/data.rb'
+load File.dirname(__FILE__) + "/support/data.rb"
