@@ -24,7 +24,7 @@ module ClassMethods
 								self.#{dbi18_type}.class_id = self.id;
 								self.#{dbi18_type}.save;
 							else
-								self.#{dbi18_type} = CimuDbi18.new if (self.#{dbi18_type} = CimuDbi18.where(:class_id => self.id, :class_name => self.class.name, :property => method.to_s).first).blank?;
+								self.#{dbi18_type} = (Dbi18.model).new if (self.#{dbi18_type} = (Dbi18.model).where(:class_id => self.id, :class_name => self.class.name, :property => method.to_s).first).blank?;
 								self.#{dbi18_type}.class_id = self.id;
 								self.#{dbi18_type}.property = method.to_s;
 								self.#{dbi18_type}.class_name = self.class.name
@@ -62,7 +62,7 @@ module ClassMethods
 					dbi18_type = ("dbi18_"+language_type).to_sym
 					self.send :define_method, new_method do |args| #set_value
 						if eval("self.#{dbi18_type}.blank?")
-				    	@s_result = CimuDbi18.new if ((@s_result = CimuDbi18.where(:class_id => self.id, :class_name => self.class.name, :language_type => language_type).first).blank?)
+				    	@s_result = (Dbi18.model).new if ((@s_result = (Dbi18.model).where(:class_id => self.id, :class_name => self.class.name, :language_type => language_type).first).blank?)
 				    else
 				    	eval("@s_result = self.#{dbi18_type}")
 				    end
@@ -82,7 +82,7 @@ module ClassMethods
 				    self.send :define_method, new_method do #get_value
 				      eval(
 			    			"
-			      	 	self.#{dbi18_type} = CimuDbi18.where(:class_id => self.id, :class_name => self.class.name, :language_type => language_type).first if self.#{dbi18_type}.blank?;
+			      	 	self.#{dbi18_type} = (Dbi18.model).where(:class_id => self.id, :class_name => self.class.name, :language_type => language_type).first if self.#{dbi18_type}.blank?;
 			      	 	return \"\" if (self.#{dbi18_type}).blank?;
 			      	 	return \"\" if (self.#{dbi18_type}.hash_content).blank?;
 			      	 	return  (eval self.#{dbi18_type}.hash_content)[\"#{attribute}\"]
@@ -102,7 +102,7 @@ module ClassMethods
 end
 	module Del
 		def delete
-			if !(@s_result = CimuDbi18.where(:class_id => self.id, :class_name => self.class.name)).blank?
+			if !(@s_result = (Dbi18.model).where(:class_id => self.id, :class_name => self.class.name)).blank?
 				@s_result.each do |result|
 					result.delete
 				end

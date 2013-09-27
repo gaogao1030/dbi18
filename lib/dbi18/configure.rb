@@ -3,6 +3,8 @@ module Dbi18
 
     LANGUAGE_TYPE = [:en,:zh]
     attr_accessor :language_type
+    
+    attr_accessor :model
 
     def configure
       yield self if block_given?

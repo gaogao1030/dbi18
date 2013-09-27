@@ -1,6 +1,6 @@
 class CreateCimuDbi18 < ActiveRecord::Migration
   def change
-    create_table(:cimu_dbi18s) do |t|
+    create_table(:<%= table_name %>) do |t|
       t.integer :class_id
       t.string  :class_name
       t.string  :language_type
@@ -8,9 +8,9 @@ class CreateCimuDbi18 < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index(:cimu_dbi18s, :class_id)
-    add_index(:cimu_dbi18s, :class_name)
-    add_index(:cimu_dbi18s, :language_type)
-    add_index(:cimu_dbi18s, :hash_content)
+    add_index(:<%= table_name %>, :class_id)
+    add_index(:<%= table_name %>, :class_name)
+    add_index(:<%= table_name %>, :language_type)
+    add_index(:<%= table_name %>, :hash_content)
   end
 end
