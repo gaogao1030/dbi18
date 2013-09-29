@@ -27,9 +27,10 @@ Or install it yourself as:
 Model/language.rb
 
     db_i18n(:name,:des)
+    #设置需要多语种属性
 
-    #Dbi18语种可以在config/initialzer/dbi18.rb下配置
-
+config/initialzer/dbi18.rb
+	
     config/initialzer/dbi18.rb
 
         Dbi18.configure do |config|
@@ -43,7 +44,6 @@ Model/language.rb
 	config.model = model_name # model的名字 生成表名的情况下会自动生成model的名字 这个选项推荐不要修改
 
     end
-
 
 console
 
