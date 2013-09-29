@@ -2,110 +2,90 @@ require "spec_helper"
 
 describe I18n do
 	describe "i18n_test" do
-		context "when model isn't extend I18n" do
+		context "when model can't use db_i18n" do
 			before(:each) do
-				@s = Sub2.new
-				@s.name = "nomal"
+				@sub2 = Sub2.last
 			end
 
-			it "should @s.name is @s.name " do
-					(@s.name == "nomal").should be_true
+			it "should @sub2.name is @sub2.name " do
+					(@sub2.name == "normal").should be_true
 			end
 			
-			it "should @s.name_en isn't exist " do
-				(!@s.methods.include? "name_en").should be_true
+			it "should @sub2.name_en isn't exist " do
+				(!@sub2.methods.include? "name_en").should be_true
 			end
 
-			it "should @s.name_zh isn't exist " do
-				(!@s.methods.include? "name_zh").should be_true
+			it "should @sub2.name_zh isn't exist " do
+				(!@sub2.methods.include? "name_zh").should be_true
 			end
 		end
 
-		context "when model extend I18n" do
+		context "when model use db_i18n" do
 			before(:each) do
-
-				Sub.class_eval do
-					require "module/i18"
-					extend I18n
-					db_i18n(:name,[:en,:zh,:jp])
-					db_i18n(:des,[:en,:zh,:jp])
-				end
-
-				@s = Sub.new
-				@s.name_en = "hello"
-				@s.name_zh = "你好"
-				@s.des_en = "des"
-				@s.des_zh = "描述"
-				@s.des_jp = "japan"
+				@sub1 = Sub1.last
 			end
 
-			it "should @s.name is equal @s.name_en when I18n.locale is :en " do
+			it "should @sub1.name is equal @s.name_en when I18n.locale is :en " do
 				I18n.locale = :en
-				(@s.name == "hello").should be_true
+				(@sub1.name == "english").should be_true
 			end
 			
-			it "should @s.name is equal @s.name_zh when I18n.locale is :zh " do
+			it "should @sub1.name is equal @s.name_zh when I18n.locale is :zh " do
 				I18n.locale = :zh
-				(@s.name == "你好").should be_true
+				(@sub1.name == "你好").should be_true
 			end
 
-			it "should @s.name is equal @s.name_jp when I18n.locale is :jp " do
+			it "should @sub1.name is equal @s.name_jp when I18n.locale is :jp " do
 				I18n.locale = :jp
-				(@s.name == "").should be_true
+				(@sub1.name == "").should be_true
 			end
 
-			it "should @s.des is equal @s.des_en when I18n.locale is :en " do
+			it "should @sub1.des is equal @s.des_en when I18n.locale is :en " do
 				I18n.locale = :en
-				(@s.des == "des").should be_true
+				(@sub1.des == "des").should be_true
 			end
 
-			it "should @s.des is equal @s.des_zh when I18n.locale is :zh " do
+			it "should @sub1.des is equal @s.des_zh when I18n.locale is :zh " do
 				I18n.locale = :zh
-				(@s.des == "描述").should be_true
+				(@sub1.des == "描述").should be_true
 			end
 
-			it "should @s.des is equal @s.des_jp when I18n.locale is :jp " do
+			it "should @sub1.des is equal @s.des_jp when I18n.locale is :jp " do
 				I18n.locale = :jp
-				(@s.des == "japan").should be_true
+				(@sub1.des == "japan").should be_true
 			end
 
-			it "@s.name_go.jsoncontent is hash " do
-				@hash = eval @s.name_go.jsoncontent
-				(@hash["en"] == "hello").should be_true
-				(@hash["zh"] == "你好").should be_true
+			it "when @sub1 is delete" do
+				id = @sub1.id
+				class_name = @sub1.class.name
+				@sub1.delete
+				Cimu.where(:class_id => id, :class_name => class_name).blank? .should be_true
+			end
+		end
+
+		context "when model use db_i18n with save" do
+			before(:each) do
+				@sub3 = Sub3.new
+				@sub3.name_en = "english"
+				@sub3.name_zh = "你好"
 			end
 
-			it "@s.des_go.jsoncontent is hash " do
-				@hash = eval @s.des_go.jsoncontent
-				(@hash["en"] == "des").should be_true
-				(@hash["zh"] == "描述").should be_true
-				(@hash["jp"] == "japan").should be_true
+			it "should @sub3.name is equal @sub3.name_en when I18n.locale is :en " do
+				I18n.locale = :en
+				(@sub3.name == "english").should be_true
+			end
+			
+			it "should @sub3.name is equal @sub3.name_zh when I18n.locale is :zh " do
+				I18n.locale = :zh
+				(@sub3.name == "你好").should be_true
 			end
 
-			it "should @s.name_go isn't in GO when @s isn't save" do
-				id = @s.id
-				class_name = @s.class.name
-				property = "name"
-				text = "{\"en\"=>\"hello\", \"zh\"=>\"你好\", \"jp\"=>\"\"}"
-				(Go.where(:id => id, :classname => class_name, :property => property ).blank?).should be_true
+			it "should @sub3.dbi18_type isn't in Cimu when @sub3 with save" do
+				class_name = @sub3.class.name
+				@sub3.save
+				id = @sub3.id
+				Cimu.where(:class_id => id, :class_name => class_name).blank? .should be_false
 			end
-
-			it "should @s.name_go in GO when @s.save" do
-				@s.save
-				id = @s.id
-				class_name = @s.class.name
-				property = "name"
-				text = "{\"en\"=>\"hello\", \"zh\"=>\"你好\", \"jp\"=>\"\"}"
-				(Go.where(:id => id, :classname => class_name, :property => property ).blank?).should be_false
-			end
-
-			it "when @s is delete" do
-				id = @s.id
-				class_name = @s.name
-				@s.delete
-				Go.where(:id => id, :classname => class_name).blank? .should be_true
-			end
-
 		end
 
 	end

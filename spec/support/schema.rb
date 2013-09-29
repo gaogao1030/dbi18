@@ -4,6 +4,10 @@ ActiveRecord::Schema.define do
   end
 
   create_table(:sub2s) do |t|
+    t.string :name
+  end
+
+  create_table(:sub3s) do |t|
   end
 
   create_table(:cimus) do |t|
