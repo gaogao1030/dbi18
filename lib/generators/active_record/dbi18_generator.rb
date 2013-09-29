@@ -18,14 +18,14 @@ module ActiveRecord
         # Rails::Generators.invoke("active_record:model", ["db_i18", "class_id", "class_name", "property", "hash_content",  "--no-migration"], behavior: behavior)
       end
 
-      def copy_erbac_migration
-        migration_template "migration.rb", "db/migrate/create_cimu_dbi18"
+      def copy_dbi18_migration
+         migration_template "migration.rb", "db/migrate/create_" + "#{table_name}".singularize
       end
 
       protected
 
-      def model_path(filename)
-        File.join("app", "models", "#{filename}.rb")
+      def model_path
+         File.join("app", "models", "#{table_name}".singularize + ".rb")
       end
       
     end

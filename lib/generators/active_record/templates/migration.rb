@@ -1,4 +1,4 @@
-class CreateCimuDbi18 < ActiveRecord::Migration
+class Create<%= class_name %>< ActiveRecord::Migration
   def change
     create_table(:<%= table_name %>) do |t|
       t.integer :class_id
