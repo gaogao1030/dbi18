@@ -7,43 +7,44 @@ module Dbi18
 module ClassMethods
 
 	def db_i18n(*attributes)
-		include Del
+		# include Del
 		language = Dbi18.locale
-		models_sym = Dbi18.model.to_s.pluralize.to_sym
-		self.class_eval do
-		  has_many models_sym
-		end
-	  save_method = "save".to_sym
-	  self.send :define_method, save_method do
-	  	models_sym = Dbi18.model.to_s.pluralize.to_sym
-	  	models = self.send models_sym
-			models.each do |model|
-				if model.locale == l_type
-					hash = eval "self.send #{init_attr_method}" if model.hash_content.blank?
-					hash["#{attrs_locale}"] = self.(attrs_locale.to_sym)
-				end
-			end
-		end
+		# models_sym = Dbi18.model.to_s.pluralize.to_sym
+		# self.class_eval do
+		#   has_many models_sym
+		# end
+	 #  save_method = "save".to_sym
+	 #  self.send :define_method, save_method do
+	 #  	models_sym = Dbi18.model.to_s.pluralize.to_sym
+	 #  	models = self.send models_sym
+		# 	models.each do |model|
+		# 		if model.locale == l_type
+		# 			hash = eval "self.send #{init_attr_method}" if model.hash_content.blank?
+		# 			hash["#{attrs_locale}"] = self.(attrs_locale.to_sym)
+		# 		end
+		# 	end
+		# end
 
-  	init_attr_method = ("init_hash_content").to_sym
-	  	self.send :define_method, init_attr_method do #initial obeject.dbi18_type.hash_content
-	  		@count = 0
-	  		attributes.each do |attrs|
-	  			language.each do |l_type|
-	  			attrs_locale = attrs.to_s + l_type.to_s
-	  			@count += 1
-	  			if @count == 1
-	  				@str = "{"
-	  			end
-	  			if @count < attributes.length
-	  				@str += "\"#{attrs_locale}\"=>\"\","
-	  			else
-	  				@str += "\"#{attrs_locale}\"=>\"\"}"
-	  			end
-	  		end
-	  		return @str
-	  	end
-	  end
+  	# init_attr_method = ("init_hash_content").to_sym
+	  # 	self.send :define_method, init_attr_method do #initial obeject.dbi18_type.hash_content
+	  # 		@count = 0
+	  # 		attributes.each do |attrs|
+	  # 			language.each do |l_type|
+	  # 			attrs_locale = attrs.to_s + l_type.to_s
+	  # 			@count += 1
+	  # 			if @count == 1
+	  # 				@str = "{"
+	  # 			end
+	  # 			if @count < attributes.length
+	  # 				@str += "\"#{attrs_locale}\"=>\"\","
+	  # 			else
+	  # 				@str += "\"#{attrs_locale}\"=>\"\"}"
+	  # 			end
+	  # 		end
+	  # 		return @str
+	  # 	end
+	  # end
+
 		attributes.each do |attrs|
 			language.each do |l_type|
 				attrs_locale = attrs.to_s + l_type.to_s
@@ -85,16 +86,13 @@ module ClassMethods
 			      	 	"
 				      	 	)
 					    end
-		end
-	end
+					end
+				end
 			self.send :define_method, attrs do #get_value_with_i18n.locale
 	    	locale = I18n.locale.to_s
 	    		self.send  attrs.to_s+"_"+locale
 	    end
 	end
-
-
-
 	end
 end
 	module Del
