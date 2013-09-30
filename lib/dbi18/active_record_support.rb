@@ -3,6 +3,7 @@ module Dbi18
 		def self.included(base)
   		base.extend ClassMethods
   	end
+  end
 
 module ClassMethods
 
@@ -110,7 +111,5 @@ end
 			end
 			super
 		end
-			
 	end
-end
 end
