@@ -13,14 +13,14 @@ ActiveRecord::Schema.define do
   create_table(:cimus) do |t|
       t.integer :class_id
       t.string  :class_name
-      t.string  :language_type
+      t.string  :locale
       t.text    :hash_content
       t.timestamps
     end
 
     add_index(:cimus, :class_id)
     add_index(:cimus, :class_name)
-    add_index(:cimus, :language_type)
+    add_index(:cimus, :locale)
     add_index(:cimus, :hash_content)
 
 end
