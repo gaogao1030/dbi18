@@ -15,7 +15,7 @@ module ActiveRecord
        end
 
       def generate_auth_item_model
-         invoke "active_record:model", ["#{name}", "classtable_id", "classtable_type", "language_type", "hash_content",   "--no-migration"], :migration => false
+         invoke "active_record:model", ["#{name}", "classtable_id", "classtable_type", "locale", "hash_content",   "--no-migration"], :migration => false
         # Rails::Generators.invoke("active_record:model", ["db_i18", "class_id", "class_name", "property", "hash_content",  "--no-migration"], behavior: behavior)
       end
 
