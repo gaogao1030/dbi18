@@ -36,7 +36,7 @@ module Dbi18
 	  		return @str
 	  	end
 
-		  save_method = "save".to_sym
+		  save_method = "poly_save".to_sym
 		  self.send :define_method, save_method do
 		  	models = self.send models_sym
 		  	if !models.blank?
@@ -51,8 +51,7 @@ module Dbi18
 					end
 				else
 					new_model = (Dbi18.model).new
-					hash = eval "self.send #{init_attr_method}"
-					model.hash_content = hash.to_s
+					new_model.hash_content = self.init_hash_content
 					new_model.classtable = self
 					new_model.save
 				end
