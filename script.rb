@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 p "staring uninstall dbi18 gem"
 system "sudo rm -r dbi18-0.0.0.gem"
 system "gem uninstall dbi18"

@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module Dbi18
 	module ActiveRecordSupport
 		def self.included(base)

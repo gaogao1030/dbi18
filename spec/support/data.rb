@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 Sub1.destroy_all
 Sub2.destroy_all
 

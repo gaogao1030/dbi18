@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Create<%= class_name %>< ActiveRecord::Migration
   def change
     create_table(:<%= table_name %>) do |t|
