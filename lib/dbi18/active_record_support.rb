@@ -13,6 +13,7 @@ module ClassMethods
 		language = Dbi18.locale
 		self.class_eval do
 			alias :old_save :save
+			attr_accessor :get_mark
 		end
 		self.send :define_method, "save" do
 			if self.old_save
@@ -30,11 +31,11 @@ module ClassMethods
 							attrs_locale_sym = attrs_locale.to_sym
 							hash_content["#{attrs}"]= self.send attrs_locale_sym
 						end
-							model.class_id = self.id
-							model.class_name = self.class.name
-							model.locale = locale
-							model.hash_content = hash_content.to_s
-							model.save
+						model.class_id = self.id
+						model.class_name = self.class.name
+						model.locale = locale
+						model.hash_content = hash_content.to_s
+						model.save
 					end
 			end
 	  end
@@ -57,25 +58,47 @@ module ClassMethods
 	  		return @str
 	  	end
 
+	  init_get_mark = "init_get_mark".to_sym
+	  self.send :define_method,init_get_mark do
+	  	if (!(self.id).blank?)&&((self.get_mark).blank?)
+	  		self.get_mark = true
+	  		models = (Dbi18.model).where(:class_id => self.id, :class_name => self.class.name)
+	  		models.each do |model|
+	  			attributes.each do |attrs|
+	  				attrs_locale_set = attrs.to_s + "_" + model.locale+"="
+	  				attrs_locale_set = attrs_locale_set.to_sym
+	  				hash_content = eval model.hash_content
+	  				self.send attrs_locale_set,hash_content["#{attrs}"]
+	  			end
+	  		end
+	  		return true
+	  	else
+	  		return false
+	  	end
+	  end
+
 		attributes.each do |attrs|
 			language.each do |l_type| 
 				attrs_locale = attrs.to_s + "_" + l_type.to_s
+				attrs_locale_set = attrs_locale + "="
+				locale = l_type.to_s
 						self.class_eval do
 						  attr_accessor attrs_locale.to_sym
 						end
-						# get_method = attrs.to_s+"_"+l_type.to_s
-						# get_method = get_method.to_sym
-				  #   self.send :define_method, get_method do #get_value
-
-						# end
-					end
+						get_method = attrs.to_s+"_"+l_type.to_s
+						get_method = get_method.to_sym
+				    self.send :define_method, get_method do #get_value
+				    	if !self.init_get_mark
+				    		self.send attrs_locale_set,"" if (eval "@#{get_method}").blank?
+				    	end
+				    	return eval "@#{get_method}"
+						end
+			end
 			self.send :define_method, attrs do #get_value_with_i18n.locale
 	    	locale = I18n.locale.to_s
 	    		self.send  attrs.to_s+"_"+locale
 	    end
-	end
-
-
+		end
 
 	end
 end
