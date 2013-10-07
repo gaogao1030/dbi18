@@ -81,12 +81,15 @@ describe I18n do
 				(@sub3.name == "你好").should be_true
 			end
 
-			it "should @sub3.dbi18_type isn't in Cimu when @sub3 with save" do
-				class_name = @sub3.class.name
-				@sub3.save
-				id = @sub3.id
-				Cimu.where(:class_id => id, :class_name => class_name).blank? .should be_false
+			it "should falid when @sub3.name_jp is equal nil and @sub3.save with validates :name_jp, :presence => true  " do
+				@sub3.save.should be_false
 			end
+
+			it "should falid when @sub3.name_jp is equal nil and @sub3.save with validates :name_jp, :presence => true  " do
+				@sub3.name_jp = "japan"
+				@sub3.save.should be_true
+			end
+
 		end
 
 	end

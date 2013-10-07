@@ -28,6 +28,8 @@ Model/language.rb
 
     db_i18n(:name,:des)
     #设置需要多语种属性
+    validate :name_en, :presence => true
+    #支持验证回调函数
 
 config/initialzer/dbi18.rb
 	

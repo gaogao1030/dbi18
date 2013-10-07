@@ -26,5 +26,6 @@ end
 
 class Sub3 < ActiveRecord::Base
 	db_i18n(:name)
+	validates :name_jp, :presence => true
 end
 
