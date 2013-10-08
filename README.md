@@ -33,7 +33,7 @@ Model/language.rb
 
 config/initialzer/dbi18.rb
 
-        Dbi18.configure do |config|
+    Dbi18.configure do |config|
 
         # For the time being, maybe in the long term, it only support ActiveRecord...
 
