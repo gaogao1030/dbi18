@@ -32,8 +32,6 @@ Model/language.rb
     #支持验证回调函数
 
 config/initialzer/dbi18.rb
-	
-    config/initialzer/dbi18.rb
 
         Dbi18.configure do |config|
 
