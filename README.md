@@ -41,7 +41,7 @@ config/initialzer/dbi18.rb
 
         # config.language_type = [:en,:zh] #语种设置属性
 
-	config.model = model_name # model的名字 生成表名的情况下会自动生成model的名字 这个选项推荐不要修改
+	  config.model = model_name # model的名字 生成表名的情况下会自动生成model的名字 这个选项推荐不要修改
 
     end
 
