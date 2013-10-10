@@ -24,6 +24,7 @@ Or install it yourself as:
 
     rails g model language
 
+    bundle exec rake db:migrate
 Model/language.rb
 
     db_i18n(:name,:des)
