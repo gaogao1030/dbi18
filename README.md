@@ -22,7 +22,7 @@ Or install it yourself as:
 
     rails g dbi18 table_name [option] #生成表名与model名字
 
-    rails g model language
+    rails g model name
 
     bundle exec rake db:migrate
 Model/language.rb
