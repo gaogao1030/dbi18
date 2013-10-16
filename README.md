@@ -25,7 +25,7 @@ Or install it yourself as:
     rails g model name
 
     bundle exec rake db:migrate
-Model/language.rb
+Model/name.rb
 
     db_i18n(:name,:des)
     #设置需要多语种属性
